@@ -48,3 +48,32 @@ Note文本框是用来写注释的，不影响实际运行效果。
 ## 节点类型介绍
 
 上面的例子介绍了框架的简单使用，接着介绍四个类型节点的运行逻辑。
+
+### 触发器节点：
+触发器节点是决定事件什么时候触发的关键，当条件满足时，该触发器节点连接的下一节点逻辑会被触发，此时该触发器State也会进入【执行中】的状态。
+触发器只有一个输出端口，输出端口只能单连接。
+
+![image](https://user-images.githubusercontent.com/74815734/208721691-b7497b44-6567-45ee-a185-693181d5cc8d.png)
+![image](https://user-images.githubusercontent.com/74815734/208721708-d58cd15d-4798-4c51-8c26-617688df80a0.png)
+
+触发器节点共有属性：
+
+State:表示该触发器的状态，当触发器被触发时，State进入【执行中】，直到触发器触发的逻辑流向的最后一个节点执行完成后，State才会进入【执行完毕】。当事件节点在后面形成环形逻辑时，则会造成这个Trigger永远不会进入【执行完毕】的状态，请注意这点。
+![image](https://user-images.githubusercontent.com/74815734/208721733-ada8f232-aedf-4901-b74f-5ea60960a8c4.png)
+
+Trigger有几个共同属性。
+生命周期执行：与Unity的MonoBehaviour执行顺序一致。
+CanExecuteOnRunning：当触发器状态位于【执行中】时，该触发器是否能被再次触发，默认值为false
+RunOnlyOnce:该触发器是否只能执行一次，当该选项被勾中时，触发器执行完成后便会摧毁自己（当勾选该选项时，CanExecuteOnRunning需要为false）注意这里Trigger的状态并不会被存档，意味着当场景被重载时，如果这个Trigger在资源场景里，该Trigger依然会被重新创建。
+
+### 事件节点：
+事件节点：决定该事件执行的逻辑内容
+触发器拥有一个输入端口，一个输出端口，输入端口可以多连接，输出端口只能单连接。
+
+![image](https://user-images.githubusercontent.com/74815734/208721850-21aa4194-03c2-454c-8bb1-d08ac7923da4.png)
+
+事件节点共有属性：
+Wait1Frame:执行时等待一帧
+运行特性：
+当事件节点为最后一个时（即它的output端口没有连接任何其他端口），事件结束时，就会将触发该事件的触发器Trigger节点State设置成【执行完毕】
+

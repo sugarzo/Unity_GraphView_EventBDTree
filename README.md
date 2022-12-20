@@ -1,6 +1,6 @@
 # Unity_GraphView_EventBDTree
 
-本框架使用了GraphView和UI Toolkit，实现了类似行为树插件的可视化节点操作，方便长期项目中策划同学也能参与进来编写游戏逻辑。该框架比较轻量级，这篇文档用来介绍框架如何使用，前半部分是程序策划篇，只介绍如何使用比较简单，不需要代码知识也能理解。后半部分针对程序讲解如何拓展脚本和新节点。（分支已内置Odin和DOTween插件）
+本框架使用了GraphView和UI Toolkit，实现了类似行为树插件的可视化节点操作，方便长期项目中策划同学也能参与进来编写游戏逻辑。该框架比较轻量级，这篇文档用来介绍框架如何使用，前半部分是程序策划篇，只介绍如何使用比较简单，不需要代码知识也能理解。后半部分针对程序讲解如何拓展脚本和新节点。（框架已内置Odin和DOTween插件）
 
 节点图效果展示样例：
 
@@ -186,6 +186,8 @@ namespace SugarFrame.Node
 
 自定义Trigger的核心在于何时调用Execute函数，当Execute执行时，代表Trigger触发。
 
+例如ButtonTrigger的写法如下，当UI按钮被按下时触发事件：
+
 ```csharp
 using System.Collections.Generic;
 using UnityEngine;
@@ -219,8 +221,6 @@ namespace SugarFrame.Node
 命名空间为SugarFrame.Node，只需要重写RunningLogic()，在逻辑执行完成时调用RunOver(emitTrigger)即可
 
 请保证RunOver一定要被执行且一次逻辑中只被执行一次
-
-例如ButtonTrigger的写法如下，当按钮被按下时触发事件：
 
 ```csharp
 using UnityEngine;
@@ -305,7 +305,8 @@ namespace SugarFrame.Node
 
 暂未提供拓展接口。
 
+### 作者账号
 
-
+CSDN：https://blog.csdn.net/m0_51776409/article/details/127876213
 
 

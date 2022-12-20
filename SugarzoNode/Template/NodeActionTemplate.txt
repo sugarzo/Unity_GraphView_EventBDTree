@@ -1,0 +1,18 @@
+﻿using UnityEngine;
+
+namespace SugarFrame.Node
+{
+    public class #TTT# : BaseAction
+    {
+        [Header("#TTT#")]
+        public string content;
+
+        public override void RunningLogic(BaseTrigger emitTrigger)
+        {
+            //Write Logic
+
+            RunOver(emitTrigger);
+        }
+    }
+
+}

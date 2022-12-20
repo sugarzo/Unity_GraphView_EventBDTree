@@ -145,11 +145,17 @@ public abstract class MonoState : NodeState, IStateEvent
 ```
 
 参考UMG图如下（啊懒得画了，在这里文字描述一下继承关系）
+
 NodeState : MonoBehaviour
+
 MonoState : NodeState, IStateEvent
+
 BaseTrigger：MonoState
+
 BaseAction：MonoState
+
 BaseBranch：BaseAction
+
 BaseSeqence：BaseAction
 
 ### 触发器节点：
@@ -236,6 +242,70 @@ namespace SugarFrame.Node
 
 }
 ```
+
+如果是非实时逻辑（比如异步加载，需要等待），可以将RunOver传入对应委托，或者用协程挂起即可。下面是IntervalAction节点的参考写法：
+
+```csharp
+using UnityEngine;
+
+using System;
+using System.Collections;
+using UnityEngine;
+
+namespace SugarFrame.Node
+{
+    public class IntervalAction : BaseAction
+    {
+        [Header("等待x秒后执行下一个")]
+        public float timer = 1f;
+
+        public override void RunningLogic(BaseTrigger emitTrigger)
+        {
+            StartCoroutine(WaitTime(()=>RunOver(emitTrigger)));
+        }
+
+        IEnumerator WaitTime(Action _event)
+        {
+            if(timer <= 0)
+            {
+                _event?.Invoke();
+                yield break;
+            }
+            yield return new WaitForSeconds(timer);
+            _event?.Invoke();
+        }
+    }
+
+}
+```
+
+### 条件节点：
+命名空间为SugarFrame.Node，只需要重写bool IfResult()的函数即可判断流向
+
+```csharp
+using UnityEngine;
+
+namespace SugarFrame.Node
+{
+    public class #TTT# : BaseBranch
+    {
+        [Header("#TTT#")]
+        public string content;
+
+        public override bool IfResult()
+        {
+            return true;  
+        }
+    }
+
+}
+```
+
+### 序列节点：
+
+暂未提供拓展接口。
+
+
 
 
 

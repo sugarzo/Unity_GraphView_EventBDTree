@@ -25,8 +25,11 @@ Note文本框是用来写注释的，不影响实际运行效果。
 ![image](https://user-images.githubusercontent.com/74815734/208721179-4c759be5-b797-4681-8db0-44189bd19a2a.png)
 
 节点主要分为四大类：触发器节点、行为（事件）节点、分支节点、序列节点。
+
 其中，触发器和行为节点是主要的节点：触发器节点决定什么时候触发这个事件（例如玩家按下某个按键，游戏中某个状态改变到指定值，游戏内某个事件发生都可以算是一个触发时机），行为节点决定了进入该节点后程序需要执行什么逻辑。具体主要节点的功能见文档末尾的节点附录。
+
 例如，我想执行一段逻辑：当进入游戏场景的时候开始播放游戏音乐BGM，这时候已经知道程序已经提前写好了对应播放音乐的Action节点和Trigger节点。
+
 新建一个StatusTrigger和AudioAction，在创建节点列表中找到对应节点，点击对应节点可以在左边Inspector面板中设置对应属性值，连接逻辑如下：
 
 ![image](https://user-images.githubusercontent.com/74815734/208721225-6a84da8b-1134-4580-a234-eff83f4d3f97.png)
@@ -51,6 +54,7 @@ Note文本框是用来写注释的，不影响实际运行效果。
 
 ### 触发器节点：
 触发器节点是决定事件什么时候触发的关键，当条件满足时，该触发器节点连接的下一节点逻辑会被触发，此时该触发器State也会进入【执行中】的状态。
+
 触发器只有一个输出端口，输出端口只能单连接。
 
 ![image](https://user-images.githubusercontent.com/74815734/208721691-b7497b44-6567-45ee-a185-693181d5cc8d.png)
@@ -63,17 +67,175 @@ State:表示该触发器的状态，当触发器被触发时，State进入【执
 
 Trigger有几个共同属性。
 生命周期执行：与Unity的MonoBehaviour执行顺序一致。
+
 CanExecuteOnRunning：当触发器状态位于【执行中】时，该触发器是否能被再次触发，默认值为false
+
 RunOnlyOnce:该触发器是否只能执行一次，当该选项被勾中时，触发器执行完成后便会摧毁自己（当勾选该选项时，CanExecuteOnRunning需要为false）注意这里Trigger的状态并不会被存档，意味着当场景被重载时，如果这个Trigger在资源场景里，该Trigger依然会被重新创建。
 
 ### 事件节点：
 事件节点：决定该事件执行的逻辑内容
+
 触发器拥有一个输入端口，一个输出端口，输入端口可以多连接，输出端口只能单连接。
 
 ![image](https://user-images.githubusercontent.com/74815734/208721850-21aa4194-03c2-454c-8bb1-d08ac7923da4.png)
 
 事件节点共有属性：
 Wait1Frame:执行时等待一帧
+
 运行特性：
+
 当事件节点为最后一个时（即它的output端口没有连接任何其他端口），事件结束时，就会将触发该事件的触发器Trigger节点State设置成【执行完毕】
+
+### 条件节点：
+一种特殊的事件节点，有两个输出端口，都只能单连接。当条件满足时流向true，不满足时流向false
+![image](https://user-images.githubusercontent.com/74815734/208722148-9baea6d4-7928-478c-885f-f8612c519128.png)
+
+### 序列节点：
+一种特殊的事件节点，有一个支持多连接的输出端口（也是目前框架里唯一一个支持输出端口多连接的节点），可以整合多个流向的事件。该节点的执行逻辑有些不同，只有在所有流向的逻辑都执行完成时，才会返回【执行完成】给对应的触发器
+![image](https://user-images.githubusercontent.com/74815734/208722206-3d2facc9-9007-4347-a994-059a3d751ecc.png)
+
+## 节点扩展
+以下是程序篇部分，可以通过创建新的脚本新增新的节点，在顶部窗口打开【FlowChart】
+
+设置好文件名和保存脚本路径，点击Create即可，注意不要重名了。
+![image](https://user-images.githubusercontent.com/74815734/208722314-5b19e52e-6ac9-4799-b3a0-57b5b769c088.png)
+
+![image](https://user-images.githubusercontent.com/74815734/208722333-ec8e3b9a-abf1-41ea-b9aa-61cc386eb556.png)
+
+所有节点都是state : MonoBehaviour的基类，所以都享有Unity GameObject的生命周期，可以被destroy和setActive。
+
+```csharp
+public enum EState
+{
+    [LabelText("未执行")]
+    None,
+    [LabelText("正在进入")]
+    Enter,
+    [LabelText("正在执行")]
+    Running,
+    [LabelText("正在退出")]
+    Exit,
+    [LabelText("执行完成")]
+    Finish,
+}
+public interface IStateEvent
+{
+    void Execute();
+    void OnEnter();
+    void OnRunning();
+    void OnExit();
+}
+
+//所有节点的基类
+public abstract class NodeState : MonoBehaviour
+{
+#if UNITY_EDITOR
+    [HideInInspector]
+    public Vector2 nodePos;
+#endif
+    //流向下一节点的流
+    [HideInInspector]
+    public MonoState nextFlow;
+}
+
+public abstract class MonoState : NodeState, IStateEvent
+{
+
+}
+```
+
+参考UMG图如下（啊懒得画了，在这里文字描述一下继承关系）
+NodeState : MonoBehaviour
+MonoState : NodeState, IStateEvent
+BaseTrigger：MonoState
+BaseAction：MonoState
+BaseBranch：BaseAction
+BaseSeqence：BaseAction
+
+### 触发器节点：
+
+命名空间为SugarFrame.Node，模板中有两个内置注册事件和注销事件的函数，分别会在触Enable和DisEnable中执行，请保证最好注册注销事件需要对应。不然就会出现Trigger已经被摧毁了却依然在监听事件，导致Null错误。
+
+```csharp
+using UnityEngine;
+
+namespace SugarFrame.Node
+{
+    public class #TTT# : BaseTrigger
+    {
+        //Called on Enable
+        public override void RegisterSaveTypeEvent()
+        {
+            //EventManager.StartListening("",Execute);
+        }
+
+        //Called on DisEnable
+        public override void DeleteSaveTypeEvent()
+        {
+            //EventManager.StopListening("",Execute);
+        }
+    }
+}
+```
+
+自定义Trigger的核心在于何时调用Execute函数，当Execute执行时，代表Trigger触发。
+
+```csharp
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace SugarFrame.Node
+{
+    public class ButtonTrigger : BaseTrigger
+    {
+        public List<Button> buttons;
+
+        //Called on Enable
+        public override void RegisterSaveTypeEvent()
+        {
+            foreach (var btn in buttons)
+                btn.onClick.AddListener(Execute);
+        }
+
+        //Called on DisEnable
+        public override void DeleteSaveTypeEvent()
+        {
+            foreach (var btn in buttons)
+                btn.onClick.RemoveListener(Execute);
+        }
+    }
+}
+```
+
+### 事件节点：
+
+命名空间为SugarFrame.Node，只需要重写RunningLogic()，在逻辑执行完成时调用RunOver(emitTrigger)即可
+
+请保证RunOver一定要被执行且一次逻辑中只被执行一次
+
+例如ButtonTrigger的写法如下，当按钮被按下时触发事件：
+
+```csharp
+using UnityEngine;
+
+namespace SugarFrame.Node
+{
+    public class #TTT# : BaseAction
+    {
+        [Header("#TTT#")]
+        public string content;
+
+        public override void RunningLogic(BaseTrigger emitTrigger)
+        {
+            //Write Logic
+
+            RunOver(emitTrigger);
+        }
+    }
+
+}
+```
+
+
 

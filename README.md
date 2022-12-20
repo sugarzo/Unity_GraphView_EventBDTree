@@ -6,7 +6,7 @@
 
 ![image](https://user-images.githubusercontent.com/74815734/208720653-3ed63df7-f126-44e5-ae75-46601ffdd39c.png)
 
-# 如何搭建逻辑
+## 如何搭建逻辑
 在Unity的Hierarchy窗口中，右键新建物品菜单中，可以看到一个FlowChart的选项，点击新建，场景便会多一个FlowChart游戏物品。
 ![image](https://user-images.githubusercontent.com/74815734/208720792-984bff88-4a86-4b3c-8bda-6125fbad0806.png)
 ![image](https://user-images.githubusercontent.com/74815734/208720811-d99cc1fe-6514-4af6-93c4-6cf83eaea162.png)
@@ -40,3 +40,11 @@ Note文本框是用来写注释的，不影响实际运行效果。
 理论上一张图里只要不是几百个节点都不会卡（应该），不过最好还是根据需求分开模块，一个游戏物品只能搭载一个FlowChart对应一张图，当逻辑多时就多搭建几张图，比如点击事件放一张图，状态事件放一张图等。
 
 通过简单的Trigger和Action的连接，就可以搭建游戏逻辑了！
+
+## 样例场景
+
+通过上面的简单例子，应该可以理解节点图的使用方式了。在框架中的Assets\SugarzoNode\Scene中，有一个样例场景，可以参考里面的逻辑。
+
+## 节点类型介绍
+
+上面的例子介绍了框架的简单使用，接着介绍四个类型节点的运行逻辑。

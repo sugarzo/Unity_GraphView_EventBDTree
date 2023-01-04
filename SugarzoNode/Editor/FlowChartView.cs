@@ -178,7 +178,6 @@ namespace SugarFrame.Node
             if (userSeletionGo != null)
             {
                 Debug.Log("构建节点边的关系");
-                //新算法
                 CreateNodeEdge();
             }
         }
@@ -222,8 +221,9 @@ namespace SugarFrame.Node
             if (userSeletionGo == null)
                 return;
 
+            //这里有点像图的邻接表
             Dictionary<NodeState, BaseNodeView> map = new Dictionary<NodeState, BaseNodeView>();
-            Dictionary<BaseNodeView, Port> inputPorts = new Dictionary<BaseNodeView, Port>();  //input只有一个点！
+            Dictionary<BaseNodeView, Port> inputPorts = new Dictionary<BaseNodeView, Port>();
             Dictionary<BaseNodeView, List<Port>> outputPorts = new Dictionary<BaseNodeView, List<Port>>();
 
             ports.ForEach(x =>
@@ -324,7 +324,7 @@ namespace SugarFrame.Node
         /// <summary>
         /// 复制时
         /// </summary>
-        protected virtual void OnDuplicate()
+        protected void OnDuplicate()
         {
             Debug.Log("复制节点");
             //复制节点

@@ -10,7 +10,6 @@ namespace SugarFrame.Node
         public new class UxmlFactory : UxmlFactory<InspectorView, UxmlTraits> { }
 
         Editor editor;
-        OdinEditor odinEditor;
 
         public InspectorView()
         {
@@ -21,15 +20,16 @@ namespace SugarFrame.Node
             Clear();
             Debug.Log("显示节点的Inspector面板");
             UnityEngine.Object.DestroyImmediate(editor);
-
             editor = Editor.CreateEditor(nodeView.state);
-            //odinEditor = (OdinEditor)editor;
-            
-            IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
+
+            IMGUIContainer container = new IMGUIContainer(() => {
+                if (nodeView != null && nodeView.state != null)
+                {
+                    editor.OnInspectorGUI();
+                }
+            });
             Add(container);
         }
-        //UPdatesele
-
     }
 }
 

@@ -22,7 +22,6 @@ namespace SugarFrame.Node
 
     public class FlowChartEditorWindow : EditorWindow
     {
-        //[MenuItem("FlowChart/FlowChart")]
         public static void OpenWindow()
         {
             FlowChartEditorWindow wnd = GetWindow<FlowChartEditorWindow>();

@@ -14,8 +14,6 @@
 
 CSDN：https://blog.csdn.net/m0_51776409/article/details/127876213
 
-# 以下是使用文档
-
 ## 如何搭建逻辑
 在Unity的Hierarchy窗口中，右键新建物品菜单中，可以看到一个FlowChart的选项，点击新建，场景便会多一个FlowChart游戏物品。
 

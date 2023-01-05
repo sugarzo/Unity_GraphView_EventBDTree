@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace SugarFrame.Node
 {
+    [DisallowMultipleComponent]
     public class FlowChart:MonoBehaviour
     {
 
@@ -11,20 +12,19 @@ namespace SugarFrame.Node
         public string note;
 
         [UnityEditor.MenuItem("GameObject/FlowChart", false, priority = 0)]
-        private static void CreateFlowChartInScene()
+        public static GameObject CreateFlowChartInScene()
         {
             var gameObject = new GameObject(typeof(FlowChart).Name);
 
-            UnityEditor.Undo.RegisterCreatedObjectUndo(gameObject, "Create Trigger");
+            UnityEditor.Undo.RegisterCreatedObjectUndo(gameObject, "New FlowChart");
 
             gameObject.AddComponent<FlowChart>();
 
             if (Selection.activeGameObject != null)
             {
                 gameObject.transform.parent = Selection.activeGameObject.transform;
-
             }
-            Selection.activeGameObject = gameObject;
+            return Selection.activeGameObject = gameObject;
         }
 #endif
     }

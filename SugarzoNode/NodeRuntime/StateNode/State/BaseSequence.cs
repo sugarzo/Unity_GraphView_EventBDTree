@@ -47,11 +47,6 @@ namespace SugarFrame.Node
             //继续所有节点
             foreach (var nextFlow in nextflows)
             {
-                if (nextFlow is BaseAction nextAction)
-                    nextAction.Execute();
-                else
-                    nextFlow.Execute();
-
                 //依赖注入,当所有Action执行完成时回调Trigger
                 if (nextFlow is BaseAction action)
                     action.OnExitEvent += delegate ()
@@ -63,7 +58,10 @@ namespace SugarFrame.Node
                         }
                     };
 
-                nextFlow.Execute();
+                if (nextFlow is BaseAction nextAction)
+                    nextAction.Execute();
+                else
+                    nextFlow.Execute();
 
                 if (waitTimeEachAction > 0)
                     yield return new WaitForSeconds(waitTimeEachAction);

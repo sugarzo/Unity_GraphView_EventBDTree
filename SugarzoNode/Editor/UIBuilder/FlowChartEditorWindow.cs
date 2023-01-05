@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -22,6 +24,7 @@ namespace SugarFrame.Node
 
     public class FlowChartEditorWindow : EditorWindow
     {
+        [MenuItem("Sugarzo/FlowChart")]
         public static void OpenWindow()
         {
             FlowChartEditorWindow wnd = GetWindow<FlowChartEditorWindow>();
@@ -35,6 +38,8 @@ namespace SugarFrame.Node
 
         FlowChartView flowChartView;
         InspectorView inspectorView;
+
+        TextField gameObjectTextField;
 
         public void CreateGUI()
         {
@@ -61,6 +66,70 @@ namespace SugarFrame.Node
 
             //构造节点
             flowChartView.ResetNodeView();
+
+            //获取属性
+            gameObjectTextField = root.Q<TextField>();
+
+            //设置选择的ObjectField
+            var objectField = root.Q<ObjectField>();
+            objectField.objectType = typeof(FlowChart);
+            FlowChart flowChart = null;
+            if (userSeletionGo != null) 
+                objectField.value = userSeletionGo.TryGetComponent(out flowChart) ? flowChart :null;
+
+            if(objectField.value != null)
+            {
+                gameObjectTextField.SetEnabled(true);
+                gameObjectTextField.value = objectField.value.name;
+            }
+            else
+            {
+                gameObjectTextField.SetEnabled(false);
+                gameObjectTextField.value = "";
+            }
+
+            objectField.RegisterCallback<ChangeEvent<Object>>((evt) =>
+            {
+                if (objectField.value != null)
+                {
+                    gameObjectTextField.SetEnabled(true);
+                    gameObjectTextField.value = objectField.value.name;
+                }
+                else
+                {
+                    gameObjectTextField.SetEnabled(false);
+                    gameObjectTextField.value = "";
+                }
+
+                userSeletionGo = (evt.newValue as FlowChart)?.gameObject;
+                flowChartView.userSeletionGo = userSeletionGo;
+                flowChartView.window = this;
+
+                //重新选择Selection
+                if (objectField.value != null)
+                {
+                    Selection.activeGameObject = (evt.newValue as FlowChart)?.gameObject;
+                }
+
+                    //构造节点
+                flowChartView.ResetNodeView();
+            });
+
+            //新建FlowChart按钮
+            var button = root.Q<Button>();
+            button.clicked += delegate ()
+            {
+                objectField.value = FlowChart.CreateFlowChartInScene()?.GetComponent<FlowChart>();
+            };
+
+            //关联GO名称
+            gameObjectTextField.RegisterValueChangedCallback(evt =>
+            {
+                if(userSeletionGo != null)
+                {
+                    userSeletionGo.name = evt.newValue;
+                }
+            });
         }
 
         void OnNodeSelectionChanged(BaseNodeView nodeView)

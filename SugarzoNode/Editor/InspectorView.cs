@@ -20,6 +20,10 @@ namespace SugarFrame.Node
             Clear();
             Debug.Log("显示节点的Inspector面板");
             UnityEngine.Object.DestroyImmediate(editor);
+
+            if (nodeView == null)
+                return;
+
             editor = Editor.CreateEditor(nodeView.state);
 
             IMGUIContainer container = new IMGUIContainer(() => {

@@ -32,7 +32,7 @@ namespace SugarFrame.Node
             userSeletionGo = userSeletionGo == null ? FlowChartEditorWindow.userSeletionGo : userSeletionGo;
 
             //当GraphView变化时，调用方法
-            graphViewChanged += OnGraphViewChanged;
+            graphViewChanged = OnGraphViewChanged;
 
             //新建搜索菜单
             var menuWindowProvider = ScriptableObject.CreateInstance<SearchMenuWindowProvider>();
@@ -44,8 +44,12 @@ namespace SugarFrame.Node
             };
         }
 
+        private bool listenToChange = true;
+
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
         {
+            if (listenToChange == false)
+                return graphViewChange;
 
             if (graphViewChange.elementsToRemove != null)
             {
@@ -168,6 +172,20 @@ namespace SugarFrame.Node
         //重构布局
         public void ResetNodeView()
         {
+            listenToChange = false;
+            //移除所有节点和边
+            List<GraphElement> graphElements = new List<GraphElement>();
+            nodes.ForEach(x => graphElements.Add(x));
+            edges.ForEach(x => graphElements.Add(x));
+            for(int i = 0;i < graphElements.Count; i++)
+            {
+                RemoveElement(graphElements[i]);
+            }
+            //Inspector删除
+            OnNodeSelected(null);
+
+            listenToChange = true;
+
             if (userSeletionGo != null)
             {
                 Debug.Log("构建节点图");

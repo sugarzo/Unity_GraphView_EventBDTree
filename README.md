@@ -4,11 +4,11 @@
 
 该框架比较轻量级，这篇文档用来介绍框架如何使用介绍如何使用，不涉及程序相关。后半部分针对程序讲解如何拓展脚本和新节点。
 
-（框架已内置Odin和DOTween插件）
+框架内置了Odin
 
 节点图效果展示样例：
 
-![image](https://user-images.githubusercontent.com/74815734/210796273-15d333fd-5159-4276-8f25-c76f8ae9828e.png)
+![image](https://user-images.githubusercontent.com/74815734/215321102-235c8c6f-8a28-4ee4-9571-c0c5e8e64c62.png)
 
 ### 作者账号和框架介绍文章
 
@@ -314,5 +314,50 @@ namespace SugarFrame.Node
 
 暂未提供拓展接口。
 
+#V1.1 窗口UI更新
 
+现在可以直接在顶部菜单打开空的FlowChart窗口了
+
+![image](https://user-images.githubusercontent.com/74815734/215321145-8852daf7-76ee-401b-8ff8-154ca4e905ae.png)
+
+可以在FlowChart窗口中直接切换场景中的图，并且可以直接使用【New按钮】创建新的节点图了
+
+在游戏运行时，节点图可以依据该节点的运行状态会呈现不同颜色了，绿色代表已执行，蓝色为正在执行。该功能主要为Runtime的Debug服务
+
+![image](https://user-images.githubusercontent.com/74815734/215321179-b8a2c0ab-cdcc-402a-bfa0-042be97c2d78.png)
+
+#V1.2 新增节点的分包管理
+
+新增了节点的包管理，每个节点都属于不同的包。不同的包的节点脚本在项目资源文件中分开放置。
+
+![image](https://user-images.githubusercontent.com/74815734/215321242-92de535c-80b5-4102-a599-2779e17a0545.png)
+
+如果想拓展新的节点包，在NodePackageType.cs中找到对应的枚举类型新增即可。
+
+此外，新增了节点注释特性，用来标记在节点类的class上，使用这个特性来给节点分包和附加说明。
+
+```csharp
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false,Inherited =true)]
+public class NodeNoteAttribute : System.Attribute
+{
+    public string note;
+    public NodePackageType packageType;
+
+    public NodeNoteAttribute(string _note = "",NodePackageType _packageType = NodePackageType.Base)
+    {
+        note = _note;
+        packageType = _packageType;
+    }
+}
+```
+
+[NodeNote]有两个属性，一个是节点的说明（中文），一个是节点的隶属包。若不添加该特性则默认为基础包（Base）且没有中文注释。
+
+![image](https://user-images.githubusercontent.com/74815734/215321317-987d6a43-1c49-49c4-adcd-6cbc82107dca.png)
+
+![image](https://user-images.githubusercontent.com/74815734/215321319-f3daa0a2-3152-4838-820d-356c4b69bb29.png)
+
+对应的节点创建窗口已更改，现在新创建的节点都会自带该特性。如果创建了新的包类型，记得修改下面的Package Paths，选择该包脚本的创建目录。
+
+![image](https://user-images.githubusercontent.com/74815734/215321308-612ee8a8-5aac-4551-8d2d-635c6e178f4f.png)
 

@@ -314,7 +314,7 @@ namespace SugarFrame.Node
 
 暂未提供拓展接口。
 
-#V1.1 窗口UI更新
+# V1.1 窗口UI更新
 
 现在可以直接在顶部菜单打开空的FlowChart窗口了
 
@@ -326,7 +326,7 @@ namespace SugarFrame.Node
 
 ![image](https://user-images.githubusercontent.com/74815734/215321179-b8a2c0ab-cdcc-402a-bfa0-042be97c2d78.png)
 
-#V1.2 新增节点的分包管理
+# V1.2 新增节点的分包管理
 
 新增了节点的包管理，每个节点都属于不同的包。不同的包的节点脚本在项目资源文件中分开放置。
 

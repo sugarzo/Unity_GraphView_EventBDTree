@@ -1,0 +1,17 @@
+﻿using UnityEngine;
+
+namespace SugarFrame.Node
+{
+    [NodeNote("#T1#", "#T2#")]
+    public class #TTT# : BaseBranch
+    {
+        [Header("#TTT#")]
+        public string content;
+
+        public override bool IfResult()
+        {
+            return true;  
+        }
+    }
+
+}

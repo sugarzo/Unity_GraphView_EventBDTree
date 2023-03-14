@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/SugarzoNode/Editor/UIBuilder/FlowChart.uss?fileID=7433441132597879392&amp;guid=e1a2e013f26b9e647b4838bb74a91d89&amp;type=3#FlowChart" />
+    <uie:Toolbar name="Toolbar" style="height: 40px; flex-shrink: 0;">
+        <uie:ObjectField label="GraphObject" allow-scene-objects="true" name="SelectObject" style="flex-shrink: 0; flex-grow: 0; width: 40%; height: 100%; flex-direction: row; align-items: center; justify-content: flex-start;" />
+        <ui:Button text="New" display-tooltip-when-elided="true" name="new" />
+        <ui:TextField picking-mode="Ignore" value="GameObject" text="GameObject" name="GameObjectName" style="flex-direction: row-reverse; flex-grow: 1;" />
+        <ui:Button text="刷新" display-tooltip-when-elided="true" name="refresh" />
+    </uie:Toolbar>
+    <ui:VisualElement style="flex-direction: row; flex-grow: 1; flex-shrink: 1; height: auto; width: auto;">
+        <ui:VisualElement name="VisualElement" style="width: 30%; max-width: none; min-width: auto; flex-direction: column; flex-shrink: 0; height: 100%; flex-grow: 1; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 1px; border-bottom-left-radius: 1px; border-top-right-radius: 1px; border-bottom-right-radius: 1px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px; padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; border-left-color: rgb(111, 111, 111); border-right-color: rgb(111, 111, 111); border-top-color: rgb(111, 111, 111); border-bottom-color: rgb(111, 111, 111);">
+            <ui:Label text="Inspector" display-tooltip-when-elided="true" style="flex-shrink: 0; flex-grow: 0; margin-left: 1px; margin-right: 1px; margin-top: 1px; margin-bottom: 1px; border-left-color: rgb(103, 103, 103); border-right-color: rgb(103, 103, 103); border-top-color: rgb(103, 103, 103); border-bottom-color: rgb(103, 103, 103); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; font-size: 20px; color: rgb(194, 217, 255); height: 35px; justify-content: flex-start; align-items: auto; -unity-text-align: middle-left;" />
+            <SugarFrame.Node.InspectorView style="width: 100%; height: auto; flex-grow: 1; flex-shrink: 0; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(40, 40, 40); border-right-color: rgb(40, 40, 40); border-top-color: rgb(40, 40, 40); border-bottom-color: rgb(40, 40, 40);" />
+        </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" style="width: 70%; flex-grow: 1; flex-shrink: 0;">
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Label text="节点图" display-tooltip-when-elided="true" style="color: rgb(189, 238, 243); -unity-font-style: normal; font-size: 20px; -unity-font: none;" />
+            </ui:VisualElement>
+            <SugarFrame.Node.FlowChartView focusable="true" style="width: 100%; height: 100%;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

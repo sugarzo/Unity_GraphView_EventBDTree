@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf57b272e67049d4e8dfb0b390253584, type: 3}
+  m_Name: "\u8282\u70B9\u521B\u5EFA-\u6761\u4EF6\u8282\u70B9"
+  m_EditorClassIdentifier: 
+  createPath: Assets/SugarzoNode/NodeRuntime/StateNode/Branch
+  createFileName: IfNumData
+  prototype: {fileID: 4900000, guid: 40936759ffd4f814cb13eaef23aabf7d, type: 3}
+  code: "using UnityEngine;\r\n\r\nnamespace SugarFrame.Node\r\n{\r\n    [NodeNote(\"\u68C0\u67E5\u6570\u5B57\u6570\u636E\",
+    \"UnityBase\")]\r\n    public class IfNumData : BaseBranch\r\n    {\r\n       
+    [Header(\"IfNumData\")]\r\n        public string content;\r\n\r\n        public
+    override bool IfResult()\r\n        {\r\n            return true;  \r\n       
+    }\r\n    }\r\n\r\n}"
+  upFolderName: Branch
+  nodeNote: "\u68C0\u67E5\u6570\u5B57\u6570\u636E"
+  packageType: UnityBase

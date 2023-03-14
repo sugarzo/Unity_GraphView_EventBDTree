@@ -31,10 +31,6 @@ Note文本框是用来写注释的，不影响实际运行效果。
 如果是新建的Flowchart物品，目前节点区域是什么都没有的。编辑面板主要分为两部分：左边的Inspector面板用于显示和编辑点击节点的属性，右边的图用来显示节点（目前是空的）
 在右边的节点图区域右键，点击Create Node，可以看到可以创建的节点列表：
 
-![image](https://user-images.githubusercontent.com/74815734/208721139-352fa7b8-e229-4339-9836-9eb52701e699.png)
-
-在右边的节点图区域右键，点击Create Node，可以看到可以创建的节点列表：
-
 ![image](https://user-images.githubusercontent.com/74815734/208721167-ccf1747b-787d-4756-b228-b1dfc58c43de.png)
 ![image](https://user-images.githubusercontent.com/74815734/208721179-4c759be5-b797-4681-8db0-44189bd19a2a.png)
 
